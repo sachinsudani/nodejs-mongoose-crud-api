@@ -5,15 +5,15 @@ import { postSchema, updatePostSchema } from '../utils/validation';
 export const createPost = async (req: Request, res: Response) => {
 	const { title, body, geoLocation, active } = postSchema.parse(req.body);
 
+	let createdBy = '';
+	if (req.user) createdBy = (req.user as any)._id;
+
 	const newPost = new Post({
 		title,
 		body,
-		createdBy: req.params.userId,
+		createdBy,
 		active,
-		geoLocation: {
-			type: 'Point',
-			coordinates: geoLocation.coordinates[0],
-		},
+		geoLocation: geoLocation,
 	});
 	newPost
 		.save()
@@ -22,7 +22,10 @@ export const createPost = async (req: Request, res: Response) => {
 };
 
 export const getAllPosts = async (req: Request, res: Response) => {
-	const posts = await Post.find({ createdBy: req.params.userId });
+	let createdBy = '';
+	if (req.user) createdBy = (req.user as any)._id;
+
+	const posts = await Post.find({ createdBy });
 	posts.length > 0
 		? res.json(posts)
 		: res.status(404).json({ message: 'No posts found' });
@@ -32,14 +35,14 @@ export const updatePost = async (req: Request, res: Response) => {
 	const { title, body, geoLocation, active } = updatePostSchema.parse(req.body);
 
 	const updatedPost = await Post.findByIdAndUpdate(
-		{ _id: req.params.id, createdBy: req.params.userId },
+		{ _id: req.params.id },
 		{
 			title,
 			body,
 			active,
 			geoLocation: {
 				type: 'Point',
-				coordinates: geoLocation?.coordinates,
+				coordinates: geoLocation,
 			},
 		},
 		{ new: true }
@@ -51,10 +54,7 @@ export const updatePost = async (req: Request, res: Response) => {
 };
 
 export const deletePost = async (req: Request, res: Response) => {
-	const deletedPost = await Post.findByIdAndDelete({
-		_id: req.params.id,
-		createdBy: req.params.userId,
-	});
+	const deletedPost = await Post.findByIdAndDelete({ _id: req.params.id });
 
 	deletedPost
 		? res.status(204).json({ message: 'Post deleted' })

@@ -7,7 +7,7 @@ import { loginSchema, registerSchema } from '../utils/validation';
 
 dotenv.config();
 
-const SECRET_KEY = process.env.SECRET_KEY || 'secret';
+const SECRET_KEY = process.env.JWT_SECRET || 'secret';
 
 export const register = async (req: Request, res: Response) => {
 	const { username, password, role } = registerSchema.parse(req.body);
@@ -41,8 +41,6 @@ export const login = async (req: Request, res: Response) => {
 	const payload = {
 		user: {
 			id: user._id,
-			username: user.username,
-			role: user.role,
 		},
 	};
 
