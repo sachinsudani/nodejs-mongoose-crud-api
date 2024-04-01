@@ -25,7 +25,7 @@ app.use(passport.initialize());
 authConfig();
 
 app.use('/api/users/auth', authRoutes);
-app.use('/api/posts', postRoutes);
+app.use('/api', postRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);

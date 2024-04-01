@@ -35,3 +35,18 @@ export const postSchema = z
 			.strict(),
 	})
 	.strict();
+
+export const updatePostSchema = z
+	.object({
+		title: z.string().trim().min(3).optional(),
+		body: z.string().trim().min(6).optional(),
+		active: z.boolean().optional(),
+		geoLocation: z
+			.object({
+				type: z.enum(['Point']).optional(),
+				coordinates: z.array(z.number()).length(2).optional(),
+			})
+			.strict()
+			.optional(),
+	})
+	.strict();
