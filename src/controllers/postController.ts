@@ -20,3 +20,10 @@ export const createPost = async (req: Request, res: Response) => {
 		.then((post) => res.json(post))
 		.catch((err) => console.error(err));
 };
+
+export const getAllPosts = async (req: Request, res: Response) => {
+	const posts = await Post.find({ createdBy: req.params.userId });
+	posts.length > 0
+		? res.json(posts)
+		: res.status(404).json({ message: 'No posts found' });
+};
