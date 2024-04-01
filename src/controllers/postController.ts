@@ -11,8 +11,8 @@ export const createPost = async (req: Request, res: Response) => {
 		createdBy: req.params.userId,
 		active,
 		geoLocation: {
-			longitude: geoLocation.longitude,
-			latitude: geoLocation.latitude,
+			type: 'Point',
+			coordinates: geoLocation.coordinates[0],
 		},
 	});
 	newPost
@@ -38,8 +38,8 @@ export const updatePost = async (req: Request, res: Response) => {
 			body,
 			active,
 			geoLocation: {
-				longitude: geoLocation?.longitude,
-				latitude: geoLocation?.latitude,
+				type: 'Point',
+				coordinates: geoLocation?.coordinates,
 			},
 		},
 		{ new: true }
@@ -59,4 +59,11 @@ export const deletePost = async (req: Request, res: Response) => {
 	deletedPost
 		? res.status(204).json({ message: 'Post deleted' })
 		: res.status(404).json({ message: 'Post not found' });
+};
+
+export const getPostCounts = async (req: Request, res: Response) => {
+	const activeCount = await Post.countDocuments({ active: true });
+	const inactiveCount = await Post.countDocuments({ active: false });
+
+	res.json({ activeCount, inactiveCount });
 };

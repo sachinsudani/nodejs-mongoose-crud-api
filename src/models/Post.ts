@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface GeoLocation {
-	longitude: number;
-	latitude: number;
+	type: string;
+	coordinates: number[];
 }
 
 export interface IPost extends Document {
@@ -32,12 +32,13 @@ const postSchema = new Schema<IPost>({
 		default: true,
 	},
 	geoLocation: {
-		longitude: {
-			type: Number,
+		type: {
+			type: String,
+			enum: ['Point'],
 			required: true,
 		},
-		latitude: {
-			type: Number,
+		coordinates: {
+			type: [Number],
 			required: true,
 		},
 	},
