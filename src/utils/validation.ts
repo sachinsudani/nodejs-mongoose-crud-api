@@ -28,8 +28,8 @@ export const postSchema = z
 		active: z.boolean().optional(),
 		geoLocation: z
 			.object({
-				type: z.enum(['Point']).optional(),
-				coordinates: z.array(z.number()).length(2),
+				longitude: z.number().min(-180).max(180),
+				latitude: z.number().min(-90).max(90),
 			})
 			.strict(),
 	})
@@ -42,8 +42,8 @@ export const updatePostSchema = z
 		active: z.boolean().optional(),
 		geoLocation: z
 			.object({
-				type: z.enum(['Point']).optional(),
-				coordinates: z.array(z.number()).length(2).optional(),
+				longitude: z.number().min(-180).max(180),
+				latitude: z.number().min(-90).max(90),
 			})
 			.strict()
 			.optional(),

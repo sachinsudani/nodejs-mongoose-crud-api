@@ -11,8 +11,8 @@ export const createPost = async (req: Request, res: Response) => {
 		createdBy: req.params.userId,
 		active,
 		geoLocation: {
-			type: 'Point',
-			coordinates: geoLocation.coordinates,
+			longitude: geoLocation.longitude,
+			latitude: geoLocation.latitude,
 		},
 	});
 	newPost
@@ -38,8 +38,8 @@ export const updatePost = async (req: Request, res: Response) => {
 			body,
 			active,
 			geoLocation: {
-				type: 'Point',
-				coordinates: geoLocation?.coordinates,
+				longitude: geoLocation?.longitude,
+				latitude: geoLocation?.latitude,
 			},
 		},
 		{ new: true }

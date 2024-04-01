@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface GeoLocation {
-	type?: string;
-	coordinates: number[];
+	longitude: number;
+	latitude: number;
 }
 
 export interface IPost extends Document {
@@ -32,18 +32,15 @@ const postSchema = new Schema<IPost>({
 		default: true,
 	},
 	geoLocation: {
-		type: {
-			type: String,
-			enum: ['Point'],
-			default: 'Point',
+		longitude: {
+			type: Number,
+			required: true,
 		},
-		coordinates: {
-			type: [Number],
+		latitude: {
+			type: Number,
 			required: true,
 		},
 	},
 });
-
-postSchema.index({ location: '2dsphere' });
 
 export default mongoose.model<IPost>('Post', postSchema);
