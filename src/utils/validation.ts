@@ -21,3 +21,17 @@ export const loginSchema = z
 		password: z.string().trim().min(6),
 	})
 	.strict();
+
+export const postSchema = z
+	.object({
+		title: z.string().trim().min(3),
+		body: z.string().trim().min(6),
+		active: z.boolean().optional(),
+		geoLocation: z
+			.object({
+				type: z.enum(['Point']).optional(),
+				coordinates: z.array(z.number()).length(2),
+			})
+			.strict(),
+	})
+	.strict();

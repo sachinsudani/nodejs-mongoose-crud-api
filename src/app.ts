@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import authConfig from './auth';
 import authRoutes from './routes/authRoutes';
+import postRoutes from './routes/postRoutes';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,9 +22,10 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(passport.initialize());
-authConfig(passport);
+authConfig();
 
 app.use('/api/users/auth', authRoutes);
+app.use('/api/posts', postRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
